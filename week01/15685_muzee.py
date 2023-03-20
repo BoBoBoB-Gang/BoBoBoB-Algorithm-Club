@@ -22,7 +22,7 @@ def getCurve(sx,sy,directions,gen):
 def findSquare(xx,yy):
     for i in range(3):
         xx,yy = xx+dx[i],yy+dy[i]
-        if not (0<=x<=100 and 0<=y<=100):
+        if not (0<=x<=100 and 0<h¤Ë=y<=100):
             return False
         if (xx,yy) not in cordinates:
             return False
