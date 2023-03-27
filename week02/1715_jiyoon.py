@@ -29,6 +29,7 @@ def combine(arr):
 combine(card_stacks)
 print(num)
 
+
 # 올바른 코드
 import heapq
 import sys
