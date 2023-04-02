@@ -1,124 +1,76 @@
-import sys
-from collections import defaultdict
-from copy import deepcopy
-input = sys.stdin.readline
+import sys; input = sys.stdin.readline
+import copy
 
-N, M = map(int, input().strip().split(' '))
-room = []
-for _ in range(N):
-    room.append(list(map(int, input().strip().split(' '))))
+# CCTV 종류별, 바라보는 방향별 감시영역 재귀적 탐색
+def dfs(graph, depth):
+    global answer
+    # 종료 조건: 모든 CCTV 탐색
+    if depth == len(cctv_list):
+        # 사각지대 최솟값
+        answer = min(answer, count_zero(graph))
+        return
+    else:
+        # 사무실 정보 깊은 복사
+        graph_copy = copy.deepcopy(graph)
+        x, y, cctv_type = cctv_list[depth]
+        for cctv_dir in cctv_direction[cctv_type]:
+            # CCTV 감시영역 구하는 함수 호출
+            watch(x, y, cctv_dir, graph_copy)
+            # 현재 Case에서 타 모든 CCTV 재귀적 탐색
+            dfs(graph_copy, depth + 1)
+            # CCTV를 다른 방향으로 회전시킨 후 재탐색하기 위함
+            graph_copy = copy.deepcopy(graph)
 
-dx = [0, 1, 0, -1]
-dy = [-1, 0, 1, 0]
-
-
-def cctv1(arr, case, coord):
-    global arr
-    y, x = coord
-    while (0<=x<M and 0<=y<N):
-        y += dy[case]
-        x += dx[case]
-        arr[y][x] = '#'
-
-    return
-
-
-def cctv2(arr, case, coord):
-    global arr
-    y, x = coord
-    for n in range(0, 3, 2):
-        ny, nx = y, x
-        while (0<=nx<M and 0<=ny<N):
-            ny += dy[case+n]
-            nx += dx[case+n]
-            arr[ny][nx] = '#'
-
-    return
-
-
-def cctv3(arr, case, coord):
-    global arr
-    y, x = coord
-    for n in range(0, 2):
-        if case == 3 and n == 1:
-            case = -1
-        ny, nx = y, x
-        while (0<=nx<M and 0<=ny<N):
-            ny += dy[case+n]
-            nx += dx[case+n]
-            arr[ny][nx] = '#'
-
-    return
-
-
-def cctv4(arr, case, coord):
-    global arr
-    y, x = coord
-
-    for n in range(4):
-        if n == 2:
-            continue
-        ny, nx = y, x
-        while (0<=nx<M and 0<=ny<N):
-            ny += dy[case-n]
-            nx += dx[case-n]
-            arr[ny][nx] = '#'
-
-    return
-
-
-def cctv5(arr, coord):
-    global arr
-    y, x = coord
-    for i in range(4):
-        ny, nx = y, x
-        while (0<=nx<M and 0<=ny<N):
-            ny += dy[i]
-            nx += dx[i]
-            arr[ny][nx] = '#'
-
-    return
-        
-
-def check(arr):
-    num = 0
-    for r in room:
-        for c in r:
-            if c == 0:
-                num += 1
-    
-    return num
-
-
-bs = N*M
-
-
-cctv_loc = defaultdict(list)
-for i in range(1, 6):
-    cctv_loc[i] = []
-
-# cctv 위치 정보 저장
-for i in range(N):
-    for s in range(M):
-        if room[i][s] != 0:
-            if room[i][s] == 1:
-                cctv_loc[1].append((i, s))
-            elif room[i][s] == 2:
-                cctv_loc[2].append((i, s))
-            elif room[i][s] == 3:
-                cctv_loc[3].append((i, s))
-            elif room[i][s] == 4:
-                cctv_loc[4].append((i, s))
-            elif room[i][s] == 5:
-                cctv_loc[5].append((i, s))
+# CCTV 감시영역 구하는 함수
+def watch(x, y, direction, graph):
+    for d in direction:
+        nx, ny = x, y
+        # 특정 방향으로 벽을 만나거나 사무실을 벗어나기 전까지 탐색
+        while True:
+            nx += direction_list[d][0]
+            ny += direction_list[d][1]
+            # 맵 내 위치
+            if 0 <= nx < N and 0 <= ny < M:
+                # 벽을 만난 경우
+                if graph[nx][ny] == 6:
+                    break
+                # 새로운 감시가능 영역일 경우
+                elif graph[nx][ny] == 0:
+                    graph[nx][ny] = '#'
+            # 맵 외 위치
             else:
-                pass
-        
-        else:
-            pass
+                break
 
+# 사각지대 개수 구하는 함수
+def count_zero(graph):
+    cnt = 0
+    for i in range(N):
+        for j in range(M):
+            if graph[i][j] == 0:
+                cnt += 1
+    return cnt
 
-for i in cctv_loc[1]:
-    for 
-
-            
+if __name__ == '__main__':
+    N, M = map(int, input().split())
+    graph = [list(map(int, input().split())) for _ in range(N)]
+    # 최솟값을 구하기 위해 초기값 10억 세팅
+    answer = N*M + 1
+    cctv_list = []
+    for i in range(N):
+        for j in range(M):
+            if 1 <= graph[i][j] <= 5:
+                # CCTV 좌표 및 종류 저장
+                cctv_list.append((i, j, graph[i][j]))
+    # 탐색 방향: 상, 하, 좌, 우
+    direction_list = [(-1, 0), (1, 0), (0, -1), (0, 1)]
+    # CCTV별 이동 가능한 방향
+    cctv_direction = [
+        [],
+        [[0], [1], [2], [3]], # 1번 CCTV
+        [[0, 1], [2, 3]], # 2번 CCTV
+        [[0, 2], [0, 3], [1, 2], [1, 3]], # 3번 CCTV
+        [[0, 1, 2], [0, 1, 3], [0, 2, 3], [1, 2, 3]], # 4번 CCTV
+        [[0, 1, 2, 3]] # 5번 CCTV
+    ]
+    dfs(graph, 0)
+    print(answer)
