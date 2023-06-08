@@ -1,6 +1,10 @@
 # BoBoBoB-Algorithm-Club
 황혼의 밥밥밥 알고리즘 클럽  
-We’re BBBB gang. **B**orn to be **B**est **B**aneful **B**adass _~~(급조)~~_
+
+![image](https://github.com/BoBoBoB-Gang/BoBoBoB-Algorithm-Club/assets/46425142/f0a9b6ad-f10c-4bf3-94a5-6b991f4787b9)
+
+
+We’re BBBB gang. **B**orn to be **B**est **B**aneful **B**adass _~~(의미없음)~~_
 
 ## Link
 - [백준 BBBB 비법서(문제집)](https://www.acmicpc.net/group/workbook/view/17121/54755)
@@ -39,6 +43,9 @@ ex) [BOJ] 1002 원정이의 신나는 수학문제 (cpp)
 <!-- | 10 | BOJ | G |  | [](https://www.acmicpc.net/problem/) | -->
 | 주차 | OJ | 난이도 | 번호 | 제목 |  
 |:---:|:---:|:---:|:---|:---|  
+| 11 | BOJ | G3 | 11066 | [파일 합치기](https://www.acmicpc.net/problem/11066) |
+| 11 | BOJ | G2 | 17822 | [원판 돌리기](https://www.acmicpc.net/problem/17822) |
+| 11 | BOJ | G3 | 2638 | [치즈](https://www.acmicpc.net/problem/2638) |
 | 10 | BOJ | G2 | 1918 | [후위 표기식](https://www.acmicpc.net/problem/1918) |
 | 10 | BOJ | G4 | 9019 | [DSLR](https://www.acmicpc.net/problem/9019) |
 | 10 | BOJ | G3 | 7579 | [앱](https://www.acmicpc.net/problem/7579) |
